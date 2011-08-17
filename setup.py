@@ -16,7 +16,7 @@ def setup():
         ],
         install_requires=[
             'decorator',
-            'python-dateutil',
+            'python-dateutil==1.5',
             'spmongo',
         ],
         dependency_links=[
