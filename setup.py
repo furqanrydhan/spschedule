@@ -15,8 +15,8 @@ def setup():
             'spschedule',
         ],
         install_requires=[
-            'dateutil',
             'decorator',
+            'python-dateutil',
             'spmongo',
         ],
         dependency_links=[
