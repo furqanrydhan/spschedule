@@ -242,12 +242,12 @@ class interval(_schedule):
 
 class minutely(_schedule):
     def __init__(self):
-        schedule.__init__(self, every_minute())
+        _schedule.__init__(self, every_minute())
 
 class hourly(_schedule):
     def __init__(self):
-        schedule.__init__(self, every_hour())
+        _schedule.__init__(self, every_hour())
 
 class daily(_schedule):
     def __init__(self):
-        schedule.__init__(self, every_day())
+        _schedule.__init__(self, every_day())
