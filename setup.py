@@ -17,11 +17,11 @@ def setup():
         install_requires=[
             'decorator',
             'python-dateutil==1.5',
-            'spmongo',
+#            'spmongo',
         ],
-        dependency_links=[
-            'http://github.com/stylepage/spmongo/tarball/master#egg=spmongo',
-        ],
+#        dependency_links=[
+#            'http://github.com/stylepage/spmongo/tarball/master#egg=spmongo',
+#        ],
     )
 
 if __name__ == '__main__':
