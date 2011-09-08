@@ -20,7 +20,7 @@ def setup():
             'spmongo',
         ],
         dependency_links=[
-            'http://github.com/stylepage/spmongo/tarball/master#egg=stylepage-spmongo',
+            'http://github.com/stylepage/spmongo/tarball/master#egg=spmongo',
         ],
     )
 
