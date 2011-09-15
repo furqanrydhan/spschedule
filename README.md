@@ -27,8 +27,16 @@ pip install -e spschedule
 
 ```python
 import spschedule
+
+@spschedule.minutely()
+def foo():
+  print 'foo'
+
+@spschedule.daily()
+def bar():
+  print 'bar'
+  
+spschedule.loop()
 ```
 
-```python
-import spschedule
-```
+
