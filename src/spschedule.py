@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+__version_info__ = (0, 1, 1)
+__version__ = '.'.join([str(i) for i in __version_info__])
+version = __version__
+
 import datetime
 import dateutil.rrule
 import dateutil.tz
@@ -19,6 +23,8 @@ if not hasattr(time, '_spschedule_configured'):
     time._spschedule_persistence = None
     
     
+
+CASCADE = ['year', 'month', 'day', 'hour', 'minute', 'second', 'microsecond']
 
 FREQUENCIES = {
     'month':dateutil.rrule.MONTHLY,
@@ -42,15 +48,24 @@ def to_timestamp(datetime_object):
 
 # A scheduling rule
 class _rule(object):
+    def __init__(self, **kwargs):
+        pass
     def next(self, last=None):
         return NotImplemented
 
 class _recurrence(_rule):
     freq = None
     interval = None
+    snap_to = None
     def next(self, last=None):
         if last is None:
-            return time.time()
+            if self.snap_to is None:
+                return time.time()
+            else:
+                replace = {}
+                for kwarg in CASCADE[CASCADE.index(self.snap_to):]:
+                    replace[kwarg] = 0
+                return self.next(last=time.mktime(datetime.datetime.now().replace(**replace).timetuple()))
         elif str(self.freq).lower() in ['once']:
             return None
         else:
@@ -221,16 +236,6 @@ class _schedule(object):
 # spschedule.loop()
 class interval(_schedule):
     def __init__(self, **kwargs):
-        EQUIVALENCE = {
-            'minute':60,
-            'minutes':60,
-            'hour':60*60,
-            'hours':60*60,
-            'day':24*60*60,
-            'days':24*60*60,
-            'week':7*24*60*60,
-            'weeks':7*24*60*60,
-        }
         rule = _recurrence()
         seconds = 0
         for kwarg in kwargs.keys():
@@ -241,13 +246,19 @@ class interval(_schedule):
         _schedule.__init__(self, rule)
 
 class minutely(_schedule):
-    def __init__(self):
-        _schedule.__init__(self, every_minute())
+    def __init__(self, **kwargs):
+        _schedule.__init__(self, every_minute(**kwargs))
 
 class hourly(_schedule):
-    def __init__(self):
-        _schedule.__init__(self, every_hour())
+    def __init__(self, **kwargs):
+        _schedule.__init__(self, every_hour(**kwargs))
+
+class on_the_hour(_schedule):
+    def __init__(self, **kwargs):
+        rule = every_hour()
+        rule.snap_to = 'hour'
+        _schedule.__init__(self, rule)
 
 class daily(_schedule):
-    def __init__(self):
-        _schedule.__init__(self, every_day())
+    def __init__(self, **kwargs):
+        _schedule.__init__(self, every_day(**kwargs))
